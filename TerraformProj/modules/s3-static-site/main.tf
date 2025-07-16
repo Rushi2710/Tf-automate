@@ -31,7 +31,7 @@ resource "aws_s3_bucket_acl" "s3-acl" {
   acl    = "public-read"
 }
 
-/*Uploads the file from your local machine (var.file_path, e.g. ./website/index.html) to the S3 bucket.
+/*Uploads the file from your local machin to the S3 bucket.
 
 The key "index.html" means that this will be the fillename in S3.
 
