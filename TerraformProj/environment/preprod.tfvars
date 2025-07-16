@@ -1,5 +1,5 @@
 aws_region   = "us-east-2"
-bucket_name  = "my-site-preprod"
+bucket_name  = "2710-bucks"
 file_path    = "./website/preprod/index.html"
 environment  = "preprod"
 
