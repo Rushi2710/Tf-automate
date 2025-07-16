@@ -1,62 +1,36 @@
 pipeline {
     agent any
 
+    parameters {
+        choice(
+            name: 'ENV',
+            choices: ['dev', 'preprod'],
+            description: 'Select environment'
+        )
+    }
+
     environment {
-        // AWS credentials stored in Jenkins credentials (ID: aws-creds)
         AWS_ACCESS_KEY_ID     = credentials('aws-access-key-id')
         AWS_SECRET_ACCESS_KEY = credentials('aws-secret-access-key')
     }
 
-    parameters {
-        choice(
-            name: 'ENVIRONMENT',
-            choices: ['dev', 'preprod'],
-            description: 'Select environment to deploy'
-        )
-    }
-
     stages {
-        stage('Checkout Code') {
-            steps {
-                checkout scm
-            }
-        }
-
-        stage('Set Terraform Vars File') {
-            steps {
-                script {
-                    tfvars_file = "env/${params.ENVIRONMENT}.tfvars"
-                    echo "Using Terraform variables file: ${tfvars_file}"
-                }
-            }
-        }
-
-        stage('Terraform Init') {
+        stage('Init') {
             steps {
                 sh 'terraform init'
             }
         }
 
-        stage('Terraform Plan') {
+        stage('Plan') {
             steps {
-                sh "terraform plan -var-file=${tfvars_file}"
+                sh 'terraform plan -var-file="env/${ENV}.tfvars"'
             }
         }
 
-        stage('Terraform Apply') {
+        stage('Apply') {
             steps {
-                input message: "Apply changes to ${params.ENVIRONMENT}?"
-                sh "terraform apply -auto-approve -var-file=${tfvars_file}"
+                sh 'terraform apply -auto-approve -var-file="env/${ENV}.tfvars"'
             }
-        }
-    }
-
-    post {
-        success {
-            echo "Terraform apply completed for ${params.ENVIRONMENT}!"
-        }
-        failure {
-            echo "Terraform apply failed for ${params.ENVIRONMENT}."
         }
     }
 }
