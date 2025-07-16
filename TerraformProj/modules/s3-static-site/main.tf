@@ -6,7 +6,7 @@ resource "aws_s3_bucket" "s3" {
   }
 }
 
-# This disables all restrictions on public access, allowing objects in the bucket to be accessed publicly.
+# This disables all restrictions on public access, alllowing objects in the bucket to be accessed publicly.
 resource "aws_s3_bucket_public_access_block" "s3-public-block" {
   bucket = aws_s3_bucket.s3.id
 
