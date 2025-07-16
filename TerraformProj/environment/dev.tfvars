@@ -1,5 +1,5 @@
 aws_region   = "us-east-1"
-bucket_name  = "my-site-dev"
+bucket_name  = "2710-bucks"
 file_path    = "./website/dev/index.html"
 environment  = "dev"
 
